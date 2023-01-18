@@ -17,68 +17,34 @@ echo"<hr><br>";
 
     // retornando apenas a coluna que quero do banco de dados. 
 
-    $query_cliente = "SELECT id,nome,cpf,compra_id,livro_id,created,modified FROM clientes";
+    $query_cliente = "SELECT c.id AS id_cliente, c.nome AS nome_cliente, c.cpf AS cpf_cliente, 
+     l.nome AS nome_livro, comp.nome_compra AS nome_compra
+     FROM clientes AS c
+     INNER JOIN livros AS l
+     ON c.livro_id = l.id
+     INNER JOIN 
+     compra AS comp
+     ON c.compra_id = comp.id
+     ";
+
     $result_cliente= $conn->prepare($query_cliente);
     $result_cliente->execute();
 
-    while($row_cliente = $result_cliente->fetch(PDO::FETCH_ASSOC)){ 
+    while($row_client = $result_cliente->fetch(PDO::FETCH_ASSOC)){
         
-        extract($row_cliente); // extrai as colunas de dentro do row_usuarios
-
-        //tabela
-
-
-        echo "<table>";
-
-        echo "<tr>";
-        echo "<th>ID</th>";
-        echo "<th>Nome</th>";
-        echo "<th>CPF</th>";
-        echo "<th>Compra</th>";
-
-        echo "<th>Livro</th>";
-
-        echo "<th>Created</th>";
-
-        echo "<th>Modified</th>";
-
-       
-
-        echo "</tr>";
-
-
-        echo "<tr>";
-        echo "<td>". $id. "</td>";
-
-        echo "<td>". $nome. "</td>";
-
-        echo "<td>". $cpf. "</td>";
-
-        echo "<td>". $compra_id. "</td>";
-
-        echo "<td>". $livro_id. "</td>";
+        echo "ID: " . $row_client['id_cliente'] . "<br>";
+        echo "Nome: ". $row_client['nome_cliente']. "<br>";
+        echo "CPF: ". $row_client['cpf_cliente']. "<br>";
+        echo "Nome da Compra : ". $row_client['nome_compra']. "<br>";
+        echo "Nome do livro Comprado : ". $row_client['nome_livro']. "<br>";
         
-        echo "<td>". $created. "</td>";
-
-        echo "<td>". $modified. "</td>";
-
-    
-
-
-
-
-        echo "</tr>";
-
-        echo "</table>";
-
-       
-
-
-
+        echo "<br>";
+        echo "<hr>";
+    }
 
   
     
-}
+
 
 ?>
 
