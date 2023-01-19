@@ -1,0 +1,43 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid rgb(207, 190, 190);
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    width:10%
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  .title1{
+    color: rgb(4, 4, 36);
+    font-family: sans-serif ;
+    padding-bottom: 300px;
+  }
+
+  body{
+    background-image: url('img1.webp');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: max-content;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .buttons{
+   margin-top:141px;
+  }
+
+
+
+
+ 
