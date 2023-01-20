@@ -1,6 +1,6 @@
 # crud livraria
 
-crud livraria é um projeto pessoal para aprender a trabalhar com html, css, php e banco de dados. 
+crud livraria é um projeto pessoal para aprofundar html, css, php e banco de dados. 
 
 19-01-2023 : 
 
