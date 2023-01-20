@@ -1,3 +1,8 @@
+<?php
+include '../../model/connBd.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,13 +17,12 @@
 <title>Livraria Samuel Dias</title>
 </head>
 
-<body class="bg-dark-subtle">
+<body>
 
 <div class="container-fluid">
 
-
-<nav class="navbar navbar-expand-lg  navbar-dark shadow-5-strong">
-  <a class="navbar-brand" href="./index.php"> S & M </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="../../index.php"> S & M</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -26,27 +30,94 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="../clientes/view/clientes.php">Listar clientes</a>
+        <a class="nav-link" href="./clientes.php">Listar Clientes </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../livros/view/livros.php">Listar livros</a>
+        <a class="nav-link" href="../livros/livros.php">Listar Livros</a>
       </li>
+
       
+     
     </ul>
    
   </div>
 </nav>
+            
+        </div>
 
 
-<div class="text-center title1">
-<h1>Sam's Library</h1>
+
+<div class="container">
+
+
+
+
+
+ 
+<?php
+
+$query_cliente = "SELECT id , nome, cpf, email FROM clientes";
+
+$result_cliente = $conn->prepare($query_cliente);
+
+$result_cliente->execute();
+
+
+
+if(($result_cliente) AND ($result_cliente-> rowCount() != 0))
+{
+	?>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nome</th>
+				<th>CPF</th>
+        <th>EMAIL DO CLIENTE</th>
+        
+		</tr>
+		</thead>
+		<tbody>
+			<?php
+			while($row_cliente = $result_cliente->fetch(PDO::FETCH_ASSOC)){
+				?>
+				<tr>
+					<th><?php echo $row_cliente['id']; ?></th>
+					<td><?php echo $row_cliente['nome']; ?></td>
+					<td><?php echo $row_cliente['cpf']; ?></td>
+          <td><?php echo $row_cliente['email']; ?></td>
+                    </tr>
+				<?php
+			}?>
+		</tbody>
+	</table>
+<?php
+}else{
+	echo "<div class='alert alert-danger' role='alert'>Nenhum usuário encontrado!</div>";
+}
+
+
+?>
+
+
+        
+
+
+
+
+</div>
+
+<div class="text-center">
+
+<button type="button" class="btn btn-outline-info"><a href="./cadastrar.php" style="text-decoration: none;">Cadastrar</a></button>
+<button type="button" class="btn btn-outline-info">Editar</button>
+<button type="button" class="btn btn-outline-info">Excluir</button>
+
 </div>
 
 
 
 
-
-</div>
 
 <!-- Footer -->
 <footer class="bg-dark text-center text-white buttons">
@@ -97,9 +168,6 @@
   <!-- Copyright -->
 </footer>
 <!-- Footer -->
-
-
-</div>
 
 
 

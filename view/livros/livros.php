@@ -1,6 +1,7 @@
 <?php
-include '../../connection/connBd.php';
+include '../../model/connBd.php';
 ?>
+
 
 
 <!DOCTYPE html>
@@ -22,7 +23,7 @@ include '../../connection/connBd.php';
 <div class="container-fluid">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="../../index/index.php"> S & M</a>
+  <a class="navbar-brand" href="../../index.php"> S & M</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -30,10 +31,10 @@ include '../../connection/connBd.php';
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="./clientes.php">Listar Clientes </a>
+        <a class="nav-link" href="../clientes/clientes.php">Listar Clientes </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../../livros/view/livros.php">Listar Livros</a>
+        <a class="nav-link" href="./livros.php">Listar Livros</a>
       </li>
      
     </ul>
@@ -48,82 +49,61 @@ include '../../connection/connBd.php';
 <div class="container">
 
 
-
-
-
- 
 <?php
 
-$query_cliente = "SELECT c.id AS id_cliente, c.nome AS nome_cliente, c.cpf AS cpf_cliente, 
-l.nome AS nome_livro, comp.nome_compra AS nome_compra
-FROM clientes AS c
-INNER JOIN livros AS l
-ON c.livro_id = l.id
-INNER JOIN 
-compra AS comp
-ON c.compra_id = comp.id
-";
-
-$result_cliente = $conn->prepare($query_cliente);
-$result_cliente->execute();
 
 
-
-if(($result_cliente) AND ($result_cliente-> rowCount() != 0))
-{
-	?>
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Nome</th>
-				<th>CPF</th>
-                <th>NOME DO LIVRO</th>
-                <th>NOME DA COMPRA</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php
-			while($row_cliente = $result_cliente->fetch(PDO::FETCH_ASSOC)){
-				?>
-				<tr>
-					<th><?php echo $row_cliente['id_cliente']; ?></th>
-					<td><?php echo $row_cliente['nome_cliente']; ?></td>
-					<td><?php echo $row_cliente['cpf_cliente']; ?></td>
-                    <td><?php echo $row_cliente['nome_livro']; ?></td>
-                    <td><?php echo $row_cliente['nome_compra']; ?></td>
-
-				</tr>
-				<?php
-			}?>
-		</tbody>
-	</table>
-<?php
-}else{
-	echo "<div class='alert alert-danger' role='alert'>Nenhum usuário encontrado!</div>";
-}
+    $query_livro = "SELECT id,nome,autor FROM livros";
+    $result_livros= $conn->prepare($query_livro);
+    $result_livros->execute();
 
 
-?>
-
-
-        
-
-
+    if(($result_livros) AND ($result_livros-> rowCount() != 0))
+    {
+        ?>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome DO LIVRO</th>
+                    <th>AUTOR</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                while($row_livro = $result_livros->fetch(PDO::FETCH_ASSOC)){
+                    ?>
+                    <tr>
+                        <th><?php echo $row_livro['id']; ?></th>
+                        <td><?php echo $row_livro['nome']; ?></td>
+                        <td><?php echo $row_livro['autor']; ?></td>
+                        
+    
+                    </tr>
+                    <?php
+                }?>
+            </tbody>
+        </table>
+    <?php
+    }else{
+        echo "<div class='alert alert-danger' role='alert'>Nenhum usuário encontrado!</div>";
+    }
+    
+    
+    ?>
 
 
 </div>
 
+
 <div class="text-center">
 
-<button type="button" class="btn btn-outline-info"><a href="./cadastrar.php" style="text-decoration: none;">Cadastrar</a></button>
+<button type="submit" class="btn btn-outline-info">Cadastrar</button>
 <button type="button" class="btn btn-outline-info">Editar</button>
 <button type="button" class="btn btn-outline-info">Excluir</button>
 
 </div>
-
-
-
 
 
 <!-- Footer -->
@@ -167,6 +147,8 @@ if(($result_cliente) AND ($result_cliente-> rowCount() != 0))
   </div>
 
 
+
+
   <!-- Copyright -->
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
     © 2020 Copyright:
@@ -175,6 +157,7 @@ if(($result_cliente) AND ($result_cliente-> rowCount() != 0))
   <!-- Copyright -->
 </footer>
 <!-- Footer -->
+
 
 
 
@@ -188,8 +171,5 @@ if(($result_cliente) AND ($result_cliente-> rowCount() != 0))
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 
-</body>
+        </body>
 </html>
-
-
-
