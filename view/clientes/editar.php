@@ -1,8 +1,7 @@
 <?php
 
-session_start();
+include_once '../../controller/clientes/clienteEdit_controller.php'
 
-include '../../model/connBd.php';
 ?>
 
 
@@ -22,114 +21,76 @@ include '../../model/connBd.php';
 
 <body>
 
-<div class="container-fluid">
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="../../index.php"> S & M</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="./clientes.php">Listar Clientes </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="../livros/livros.php">Listar Livros</a>
-      </li>
-
-      
-     
-    </ul>
-   
-  </div>
-</nav>
-            
-        </div>
-
-
-
 <div class="container">
+    
+    
+    
+    
+    <form method="POST" action="../../controller/clientes/clienteEdit_controller.php">
 
-
-
-
-
- 
-<?php
-
-
-        if(isset($_SESSION['msg'])){
-            echo $_SESSION['msg'];
-            unset($_SESSION['msg']);
+        <?php
+        $id = "";
+        if (isset($row_cliente['id'])) {
+            $id = $row_cliente['id'];
         }
-
-$query_cliente = "SELECT id , nome, cpf, email FROM clientes";
-
-$result_cliente = $conn->prepare($query_cliente);
-
-$result_cliente->execute();
-
-
-
-if(($result_cliente) AND ($result_cliente-> rowCount() != 0))
-{
-	?>
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Nome</th>
-				<th>CPF</th>
-        <th>EMAIL DO CLIENTE</th>
+        ?>
         
-		</tr>
-		</thead>
-		<tbody>
-			<?php
-			while($row_cliente = $result_cliente->fetch(PDO::FETCH_ASSOC)){
-				?>
-				<tr>
-					<th><?php echo $row_cliente['id']; ?></th>
-					<td><?php echo $row_cliente['nome']; ?></td>
-					<td><?php echo $row_cliente['cpf']; ?></td>
-          <td><?php echo $row_cliente['email']; ?></td>
-          <td><?php echo "<a href='./editar.php?id_usuario = $row_cliente[id]'><button class='btn btn-danger'><span class=' glyphicon glyphicon-remove'>Editar</span></button></a>";?></td>
-          <td><?php echo "<a href='./deletar.php?id_usuario = $row_cliente[id]'><button class='btn btn-danger'><span class=' glyphicon glyphicon-remove'>Deletar</span></button></a>";?></td>
-                    </tr>
-				<?php
-			}?>
-		</tbody>
-	</table>
-<?php
-}else{
-	echo "<div class='alert alert-danger' role='alert'>Nenhum usuário encontrado!</div>";
-}
+        <input type="hidden" name="id" value="<?php echo $id; ?>" required>
 
+        <?php
+        $nome = "";
+        if (isset($row_cliente['nome'])) {
+            $nome = $row_cliente['nome'];
+        }
+        ?>
+         <div class="form-group">
+         <label>Nome Completo</label>
+        
+        <input type="text" class="form-control" name="nome" placeholder="Nome completo" value="<?php echo $nome; ?>" required><br><br>
+         </div>
 
-?>
-
+        <?php
+        $cpf = "";
+        if (isset($row_cliente['cpf'])) {
+            $cpf = $row_cliente['cpf'];
+        }
+        ?>
 
         
-
-
-
-
-</div>
-
-<div class="text-center">
-
-<button type="button" class="btn btn-outline-info"><a href="./cadastrar.php" style="text-decoration: none;">Cadastrar</a></button>
-
-
-</div>
+         <div class="form-group">
+         <label>CPF</label>
+        <input type="text" class="form-control" name="cpf" placeholder="Digite o cpf" value="<?php echo $cpf; ?>" required><br><br>
+         </div>
 
 
 
 
 
-<!-- Footer -->
+
+
+        <?php
+        $email = "";
+        if (isset($row_cliente['email'])) {
+            $email = $row_cliente['email'];
+        }
+        ?>
+
+        
+         <div class="form-group">
+         <label>Email</label>
+        <input type="email" class="form-control" name="email" placeholder="O melhor e-mail do cliente" value="<?php echo $email; ?>" required><br><br>
+         </div>
+
+       
+
+        <input type="submit" value="Save" name="SendUpCliente" class="btn btn-outline-info"><br><br>
+
+    </form>
+
+    </div>
+
+    
+    <!-- Footer -->
 <footer class="bg-dark text-center text-white buttons">
   <!-- Grid container -->
   <div class="container p-4">
@@ -169,6 +130,8 @@ if(($result_cliente) AND ($result_cliente-> rowCount() != 0))
 
   </div>
 
+  
+
 
   <!-- Copyright -->
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
@@ -189,10 +152,6 @@ if(($result_cliente) AND ($result_cliente-> rowCount() != 0))
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-
 </body>
+
 </html>
-
-
-

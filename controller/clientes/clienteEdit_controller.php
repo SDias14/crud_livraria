@@ -2,7 +2,6 @@
 include '../../model/connBd.php';
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,61 +18,69 @@ include '../../model/connBd.php';
 
 <body>
 
-<?php
-
-
-
-$dados = filter_input_array(INPUT_POST, FILTER_DEFAULT); 
-
-
 
    
-    
 
-    $query_cliente = "INSERT INTO clientes (nome, cpf, email, senha, created) 
-            VALUES (:nome, :cpf, :email, :senha, NOW())";
-            $cad_cliente = $conn->prepare($query_cliente);
-            $cad_cliente->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
-            $cad_cliente->bindParam(':cpf', $dados['cpf'], PDO::PARAM_STR);
-            $cad_cliente->bindParam(':email', $dados['email'], PDO::PARAM_STR);
-            $senha_cript = password_hash($dados['senha'], PASSWORD_DEFAULT);
-            $cad_cliente->bindParam(':senha', $senha_cript);
-           
+    <?php
 
-            $cad_cliente->execute();
+    //Salvar as informações do usuário no banco de dados 
+    $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            
+    if (!empty($dados['SendUpCliente'])) {
+        //var_dump($dados);
+        try {
+            $query_up_cliente = "UPDATE clientes 
+                        SET nome=:nome, cpf=:cpf, email=:email, modified = NOW()
+                        WHERE id=:id";
+            $up_cliente = $conn->prepare($query_up_cliente);
+            $up_cliente->bindParam(':nome', $dados['nome'], PDO::PARAM_STR);
+            $up_cliente->bindParam(':cpf', $dados['cpf'], PDO::PARAM_STR);
+            $up_cliente->bindParam(':email', $dados['email'], PDO::PARAM_STR);
+            $up_cliente->bindParam(':id', $dados['id'], PDO::PARAM_INT);
 
-            if($cad_cliente->rowCount()){
-                
+            if ($up_cliente->execute()) { 
                 ?>
-
-                <div class="text-center">cliente cadastrado com sucesso</div>
+               <div class="text-center">cliente cadastrado com sucesso</div>
                 <?php
 
-            }
-            else{
+            } else {
                 ?>
                 <h1>cliente nao cadastrado com sucesso</h1>
                 <?php
-            } ?>
-
-        
-
-              
+            } 
             
+        } catch (PDOException $erro) {
+            echo "Erro: Cliente não editado com sucesso!";
+            //echo "Erro: Usuário não editado com sucesso. Erro gerando: " . $erro->getMessage() . " <br>";
+        }
+    }
+
+   
+    $id = filter_input(INPUT_GET, "id_usuario", FILTER_SANITIZE_NUMBER_INT);
+
+    //Id do usuário estático
+ 
+
+    try{
+        //Pesquisar as informações do usuário no banco de dados
+        $query_cliente = "SELECT id, nome, cpf, email
+        FROM clientes 
+        WHERE id=:id 
+        LIMIT 1";
+        $result_cliente = $conn->prepare($query_cliente);
+        $result_cliente->bindParam(':id', $id, PDO::PARAM_INT);
+        $result_cliente->execute();
+
+        $row_cliente = $result_cliente->fetch(PDO::FETCH_ASSOC);
+        //var_dump($row_cliente);
+
+    }catch(PDOException $erro){
+        echo "Erro: Cliente não encontrado!";
+        //echo "Erro: Usuário não encontrado. Erro gerando: " . $erro->getMessage() . " <br>";
+    }   
 
 
-            
-            
-                
-
-
-
-
-
-
-
+    ?>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
@@ -87,4 +94,5 @@ $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
 </body>
 </html>
+
     
