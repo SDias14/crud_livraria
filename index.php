@@ -1,3 +1,12 @@
+<?php
+
+session_start();
+
+include_once './clientes/connBd.php';
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +24,13 @@
 <body class="bg-dark-subtle">
 
 <div class="container-fluid">
+<?php
+if(isset($_SESSION['msg'])){
+            echo $_SESSION['msg'];
+            unset($_SESSION['msg']);
+        }
+
+?>
 
 
 <nav class="navbar navbar-expand-lg  navbar-dark shadow-5-strong">
@@ -26,11 +42,9 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="./view/clientes/clientes.php">Listar clientes</a>
+        <a class="nav-link" href="./clientes/listar.php">Listar clientes</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="./view/livros/livros.php">Listar livros</a>
-      </li>
+      
 
 
       <li class="nav-item dropdown">
@@ -38,7 +52,7 @@
           Conta
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="./view/clientes/cadastrar.php">Criar Conta</a>
+          <a class="dropdown-item" href="./clientes/cadastrar.php">Criar Conta</a>
           
         </div>
       </li>

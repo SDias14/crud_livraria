@@ -1,7 +1,10 @@
 <?php
-include '../../model/connBd.php';
-?>
 
+session_start();
+
+include_once './connBd.php';
+
+?>
 
 
 <!DOCTYPE html>
@@ -23,7 +26,7 @@ include '../../model/connBd.php';
 <div class="container-fluid">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="../../index.php"> S & M</a>
+  <a class="navbar-brand" href="../index.php"> S & M</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -31,11 +34,11 @@ include '../../model/connBd.php';
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="../clientes/clientes.php">Listar Clientes </a>
+        <a class="nav-link" href="./listar.php">Listar Clientes </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="./livros.php">Listar Livros</a>
-      </li>
+      
+
+      
      
     </ul>
    
@@ -49,61 +52,82 @@ include '../../model/connBd.php';
 <div class="container">
 
 
+
+
+
+ 
+
+
+
+      
+
 <?php
+        if(isset($_SESSION['msg'])){
+            echo $_SESSION['msg'];
+            unset($_SESSION['msg']);
+        }
+
+        $query_clientes = "SELECT id, nome, cpf, email FROM clientes ORDER BY id DESC";
+        $result_clientes = $conn->prepare($query_clientes);
+        $result_clientes->execute();
+
+        if(($result_clientes) AND ($result_clientes-> rowCount() != 0))
+{
+	?>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nome</th>
+				<th>CPF</th>
+        <th>EMAIL DO CLIENTE</th>
+        
+		</tr>
+		</thead>
+		<tbody>
+			<?php
+
+        while($row_cliente = $result_clientes->fetch(PDO::FETCH_ASSOC)){ 
+          extract($row_cliente);
+          ?>
+				<tr>
+            
+            <th><?php echo $id; ?></th>
+            <td><?php echo $nome; ?></td>
+            <td><?php echo $cpf; ?></td>
+           <td><?php echo $email; ?></td>
+           <td><?php echo  "<a href='./editar.php?id_usuario=$id'><button class='btn btn-danger'><span class=' glyphicon glyphicon-remove'>Editar</span></button></a>";?></td>
+           <td><?php echo  "<a href='./apagar.php?id_usuario=$id'><button class='btn btn-danger'><span class=' glyphicon glyphicon-remove'>Excluir</span></button></a>";?></td>
+           </tr>
+				<?php
+			}?>
+		</tbody>
+	</table>
+<?php
+}else{
+	echo "<div class='alert alert-danger' role='alert'>Nenhum usuário encontrado!</div>";
+}
 
 
-
-    $query_livro = "SELECT id,nome,autor FROM livros";
-    $result_livros= $conn->prepare($query_livro);
-    $result_livros->execute();
+?>
 
 
-    if(($result_livros) AND ($result_livros-> rowCount() != 0))
-    {
-        ?>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome DO LIVRO</th>
-                    <th>AUTOR</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                while($row_livro = $result_livros->fetch(PDO::FETCH_ASSOC)){
-                    ?>
-                    <tr>
-                        <th><?php echo $row_livro['id']; ?></th>
-                        <td><?php echo $row_livro['nome']; ?></td>
-                        <td><?php echo $row_livro['autor']; ?></td>
-                        
-    
-                    </tr>
-                    <?php
-                }?>
-            </tbody>
-        </table>
-    <?php
-    }else{
-        echo "<div class='alert alert-danger' role='alert'>Nenhum usuário encontrado!</div>";
-    }
-    
-    
-    ?>
+        
+
+
 
 
 </div>
-
 
 <div class="text-center">
 
-<button type="submit" class="btn btn-outline-info">Cadastrar</button>
-<button type="button" class="btn btn-outline-info">Editar</button>
-<button type="button" class="btn btn-outline-info">Excluir</button>
+<button type="button" class="btn btn-outline-info"><a href="./cadastrar.php" style="text-decoration: none;">Cadastrar</a></button>
+
 
 </div>
+
+
+
 
 
 <!-- Footer -->
@@ -147,8 +171,6 @@ include '../../model/connBd.php';
   </div>
 
 
-
-
   <!-- Copyright -->
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
     © 2020 Copyright:
@@ -157,7 +179,6 @@ include '../../model/connBd.php';
   <!-- Copyright -->
 </footer>
 <!-- Footer -->
-
 
 
 
@@ -171,5 +192,8 @@ include '../../model/connBd.php';
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 
-        </body>
+</body>
 </html>
+
+
+
