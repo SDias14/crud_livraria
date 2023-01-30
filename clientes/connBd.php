@@ -6,7 +6,7 @@ $user = "root";
 $pass = "";
 $dbname = "livraria";
 $port = 3306;
-
+//342609023329Mn!
 try{
     //Conexão com a porta
     //$conn = new PDO("mysql:host=$host;port=$port;dbname=" . $dbname, $user, $pass);
